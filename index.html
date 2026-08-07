@@ -1,80 +1,160 @@
-<div class="governance-box">
-  <h3>Data Governance Matters</h3>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data Governance Facts</title>
 
-  <div class="governance-facts">
-    <div class="governance-fact">Poor data quality costs organisations an average of $12.9M per year.</div>
-    <div class="governance-fact">Poor data quality and availability can consume 30% of enterprise time.</div>
-    <div class="governance-fact">The average cost of a data breach reached $4.88M in 2024.</div>
-    <div class="governance-fact">60% of organisations may fail to realise AI value due to weak governance.</div>
-  </div>
-</div>
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      font-family: Arial, sans-serif;
+      color: #1f2937;
+    }
 
-<style>
-  .governance-box {
-    max-width: 650px;
-    background: #ffffff;
-    border-radius: 16px;
-    border: 1px solid #dbe3ef;
-    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
-    padding: 24px;
-    font-family: Arial, sans-serif;
-  }
+    .fact-card {
+      box-sizing: border-box;
+      width: 100%;
+      min-height: 220px;
+      background: #ffffff;
+      border-left: 6px solid #2563eb;
+      border-radius: 14px;
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+      padding: 24px 28px;
+      overflow: hidden;
+    }
 
-  .governance-box h3 {
-    margin: 0 0 14px;
-    color: #172554;
-    font-size: 22px;
-  }
+    .fact-card h2 {
+      margin: 0 0 16px 0;
+      font-size: 1.35rem;
+      color: #111827;
+    }
 
-  .governance-facts {
-    position: relative;
-    min-height: 70px;
-    overflow: hidden;
-  }
+    .fact-rotator {
+      position: relative;
+      min-height: 95px;
+    }
 
-  .governance-fact {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    animation: governanceCycle 20s infinite;
-    font-size: 17px;
-    line-height: 1.5;
-    color: #1e293b;
-  }
-
-  .governance-fact:nth-child(1) { animation-delay: 0s; }
-  .governance-fact:nth-child(2) { animation-delay: 5s; }
-  .governance-fact:nth-child(3) { animation-delay: 10s; }
-  .governance-fact:nth-child(4) { animation-delay: 15s; }
-
-  @keyframes governanceCycle {
-    0%, 100% {
+    .fact {
+      position: absolute;
+      inset: 0;
       opacity: 0;
-      transform: translateY(10px);
+      transform: translateY(12px);
+      animation: rotateFacts 24s infinite;
+      font-size: 1.05rem;
+      line-height: 1.55;
+      margin: 0;
     }
 
-    8%, 22% {
-      opacity: 1;
-      transform: translateY(0);
+    .fact strong {
+      color: #2563eb;
     }
 
-    30% {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .governance-fact {
-      position: static;
-      opacity: 1;
-      animation: none;
-      margin-bottom: 10px;
+    .fact a {
+      color: #2563eb;
+      text-decoration: none;
+      font-weight: 600;
     }
 
-    .governance-facts {
-      min-height: auto;
+    .fact a:hover {
+      text-decoration: underline;
     }
-  }
-</style>
-``
+
+    .fact:nth-child(1) {
+      animation-delay: 0s;
+    }
+
+    .fact:nth-child(2) {
+      animation-delay: 6s;
+    }
+
+    .fact:nth-child(3) {
+      animation-delay: 12s;
+    }
+
+    .fact:nth-child(4) {
+      animation-delay: 18s;
+    }
+
+    @keyframes rotateFacts {
+      0% {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+
+      5% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      22% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      27% {
+        opacity: 0;
+        transform: translateY(-12px);
+      }
+
+      100% {
+        opacity: 0;
+        transform: translateY(-12px);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .fact {
+        animation: none;
+        position: static;
+        opacity: 1;
+        transform: none;
+        margin-bottom: 14px;
+      }
+
+      .fact-rotator {
+        min-height: auto;
+      }
+
+      .fact-card {
+        min-height: auto;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <section class="fact-card">
+    <h2>Why Data Governance Matters</h2>
+
+    <div class="fact-rotator">
+      <p class="fact">
+        Poor data quality costs organisations an average of 
+        <strong>$12.9 million per year</strong>, according to Gartner.
+        <a href="https://www.gartner.com/en/data-analytics/topics/data-quality" target="_blank">Source</a>
+      </p>
+
+      <p class="fact">
+        McKinsey found that poor data quality and availability can consume around 
+        <strong>30% of total enterprise time</strong> in non-value-added work.
+        <a href="https://www.mckinsey.com/capabilities/tech-and-ai/our-insights/designing-data-governance-that-delivers-value?from=@" target="_blank">Source</a>
+      </p>
+
+      <p class="fact">
+        IBM reported that the global average cost of a data breach reached 
+        <strong>$4.88 million in 2024</strong>.
+        <a href="https://newsroom.ibm.com/2024-07-30-ibm-report-escalating-data-breach-disruption-pushes-costs-to-new-highs" target="_blank">Source</a>
+      </p>
+
+      <p class="fact">
+        Gartner predicts that by 2027, 
+        <strong>60% of organisations</strong> will fail to realise expected AI value due to weak data governance frameworks.
+        <a href="https://www.gartner.com/en/data-analytics/topics/data-governance" target="_blank">Source</a>
+      </p>
+    </div>
+  </section>
+</body>
+</html>
