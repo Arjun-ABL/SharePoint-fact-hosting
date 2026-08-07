@@ -1,0 +1,80 @@
+<div class="governance-box">
+  <h3>Data Governance Matters</h3>
+
+  <div class="governance-facts">
+    <div class="governance-fact">Poor data quality costs organisations an average of $12.9M per year.</div>
+    <div class="governance-fact">Poor data quality and availability can consume 30% of enterprise time.</div>
+    <div class="governance-fact">The average cost of a data breach reached $4.88M in 2024.</div>
+    <div class="governance-fact">60% of organisations may fail to realise AI value due to weak governance.</div>
+  </div>
+</div>
+
+<style>
+  .governance-box {
+    max-width: 650px;
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid #dbe3ef;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+    padding: 24px;
+    font-family: Arial, sans-serif;
+  }
+
+  .governance-box h3 {
+    margin: 0 0 14px;
+    color: #172554;
+    font-size: 22px;
+  }
+
+  .governance-facts {
+    position: relative;
+    min-height: 70px;
+    overflow: hidden;
+  }
+
+  .governance-fact {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    animation: governanceCycle 20s infinite;
+    font-size: 17px;
+    line-height: 1.5;
+    color: #1e293b;
+  }
+
+  .governance-fact:nth-child(1) { animation-delay: 0s; }
+  .governance-fact:nth-child(2) { animation-delay: 5s; }
+  .governance-fact:nth-child(3) { animation-delay: 10s; }
+  .governance-fact:nth-child(4) { animation-delay: 15s; }
+
+  @keyframes governanceCycle {
+    0%, 100% {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    8%, 22% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    30% {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .governance-fact {
+      position: static;
+      opacity: 1;
+      animation: none;
+      margin-bottom: 10px;
+    }
+
+    .governance-facts {
+      min-height: auto;
+    }
+  }
+</style>
+``
