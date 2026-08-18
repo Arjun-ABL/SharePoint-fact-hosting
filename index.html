@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Why Data Governance Matters</title>
+  <title>Data Governance Facts</title>
 
   <style>
     :root {
@@ -16,14 +16,12 @@
 
       /* Supporting colours */
       --white: #ffffff;
-      --text: #24364b;
-      --muted-text: #53677a;
-      --border: #d7e6e8;
+      --text: #33475b;
+      --border: #d4e4e7;
 
       /*
-        Four facts × eight seconds each = 32-second cycle.
-        If you add or remove facts, update this duration and the
-        animation-delay values described in the guide below.
+        Four facts at eight seconds each.
+        Total cycle: 32 seconds.
       */
       --cycle-duration: 32s;
     }
@@ -37,6 +35,7 @@
       width: 100%;
       margin: 0;
       padding: 0;
+      overflow: hidden;
       background: transparent;
       color: var(--text);
       font-family: Arial, Helvetica, sans-serif;
@@ -46,97 +45,41 @@
       padding: 2px;
     }
 
-    .facts-section {
+    .fact-card {
       position: relative;
       width: 100%;
-      overflow: hidden;
-      background:
-        linear-gradient(
-          135deg,
-          rgba(129, 193, 204, 0.16),
-          rgba(10, 196, 154, 0.08)
-        );
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: clamp(22px, 4vw, 38px);
-    }
-
-    .section-heading {
-      max-width: 760px;
-      margin: 0 auto 24px;
-      text-align: center;
-    }
-
-    .eyebrow {
-      display: inline-flex;
-      align-items: centre;
-      gap: 9px;
-      margin: 0 0 10px;
-      color: var(--navy);
-      font-size: 0.78rem;
-      font-weight: 700;
-      letter-spacing: 0.09em;
-      text-transform: uppercase;
-    }
-
-    .eyebrow::before {
-      content: "";
-      width: 30px;
-      height: 4px;
-      background: var(--green);
-      border-radius: 999px;
-    }
-
-    .section-heading h2 {
-      margin: 0;
-      color: var(--navy);
-      font-size: clamp(1.55rem, 3vw, 2.2rem);
-      line-height: 1.15;
-    }
-
-    .section-introduction {
-      max-width: 680px;
-      margin: 12px auto 0;
-      color: var(--muted-text);
-      font-size: 1rem;
-      line-height: 1.6;
-    }
-
-    /*
-      This height keeps every slide in the same location.
-
-      If your text becomes substantially longer, increase it.
-    */
-    .fact-stage {
-      position: relative;
-      width: min(100%, 820px);
-      height: 505px;
-      margin: 0 auto;
+      height: 520px;
       overflow: hidden;
       background: var(--white);
       border: 1px solid var(--border);
       border-radius: 18px;
-      box-shadow: 0 12px 32px rgba(0, 40, 85, 0.11);
+      box-shadow: 0 10px 30px rgba(0, 40, 85, 0.12);
     }
 
-    .fact-stage::before {
+    /*
+      Branded line across the top.
+    */
+    .fact-card::before {
       content: "";
       position: absolute;
       z-index: 10;
       top: 0;
       right: 0;
       left: 0;
-      height: 5px;
+      height: 6px;
       background:
         linear-gradient(
           90deg,
-          var(--navy),
-          var(--blue),
-          var(--teal),
-          var(--green)
+          var(--navy) 0%,
+          var(--blue) 38%,
+          var(--teal) 70%,
+          var(--green) 100%
         );
     }
 
+    /*
+      Each fact occupies the same space.
+    */
     .fact-slide {
       position: absolute;
       inset: 0;
@@ -144,8 +87,9 @@
       flex-direction: column;
       opacity: 0;
       visibility: hidden;
-      transform: translateX(28px);
+      transform: translateX(24px);
       pointer-events: none;
+
       animation-name: cycleFacts;
       animation-duration: var(--cycle-duration);
       animation-timing-function: ease-in-out;
@@ -154,12 +98,7 @@
     }
 
     /*
-      Eight-second spacing between facts.
-
-      Fact 1: 0 seconds
-      Fact 2: 8 seconds
-      Fact 3: 16 seconds
-      Fact 4: 24 seconds
+      Each fact begins eight seconds after the previous fact.
     */
     .fact-slide:nth-child(1) {
       animation-delay: 0s;
@@ -178,18 +117,13 @@
     }
 
     /*
-      Each slide occupies one quarter of the full animation.
-
-      0%–2%: fade in
-      2%–22%: remain visible
-      22%–25%: fade out
-      25%–100%: remain hidden
+      Each slide uses 25% of the complete cycle.
     */
     @keyframes cycleFacts {
       0% {
         opacity: 0;
         visibility: hidden;
-        transform: translateX(28px);
+        transform: translateX(24px);
         pointer-events: none;
       }
 
@@ -210,35 +144,35 @@
       25% {
         opacity: 0;
         visibility: hidden;
-        transform: translateX(-28px);
+        transform: translateX(-24px);
         pointer-events: none;
       }
 
       100% {
         opacity: 0;
         visibility: hidden;
-        transform: translateX(-28px);
+        transform: translateX(-24px);
         pointer-events: none;
       }
     }
 
     /*
-      Pause the slideshow while someone is reading or using a link.
+      Pause while someone is reading or using the source link.
     */
-    .fact-stage:hover .fact-slide,
-    .fact-stage:focus-within .fact-slide {
+    .fact-card:hover .fact-slide,
+    .fact-card:focus-within .fact-slide {
       animation-play-state: paused;
     }
 
     .fact-image-wrapper {
       position: relative;
-      flex: 0 0 270px;
+      flex: 0 0 315px;
       overflow: hidden;
       background:
         linear-gradient(
           135deg,
           var(--navy),
-          #06487c
+          #064d7d
         );
     }
 
@@ -250,7 +184,8 @@
     }
 
     /*
-      Improves text visibility if an image is bright.
+      Branded overlay helps images from different sources
+      appear more visually consistent.
     */
     .fact-image-wrapper::after {
       content: "";
@@ -258,62 +193,52 @@
       inset: 0;
       background:
         linear-gradient(
+          135deg,
+          rgba(0, 40, 85, 0.18),
+          rgba(10, 196, 154, 0.06)
+        ),
+        linear-gradient(
           to top,
-          rgba(0, 40, 85, 0.28),
+          rgba(0, 40, 85, 0.22),
           transparent 55%
         );
       pointer-events: none;
     }
 
-    .fact-number {
-      position: absolute;
-      z-index: 2;
-      right: 18px;
-      bottom: 16px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 44px;
-      height: 30px;
-      padding: 0 12px;
-      background: var(--navy);
-      border: 1px solid rgba(255, 255, 255, 0.55);
-      border-radius: 999px;
-      color: var(--white);
-      font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 0.04em;
-    }
-
     .fact-content {
+      position: relative;
       display: flex;
       flex: 1;
       flex-direction: column;
       justify-content: center;
-      padding: 25px 30px 27px;
+      padding: 25px 32px 27px;
+      background: var(--white);
     }
 
-    .fact-category {
-      margin: 0 0 8px;
-      color: var(--teal);
-      font-size: 0.76rem;
-      font-weight: 700;
-      letter-spacing: 0.09em;
-      text-transform: uppercase;
-    }
-
-    .fact-title {
-      margin: 0;
-      color: var(--navy);
-      font-size: clamp(1.15rem, 2vw, 1.35rem);
-      line-height: 1.3;
+    /*
+      Small branded accent beside the fact.
+    */
+    .fact-content::before {
+      content: "";
+      position: absolute;
+      top: 27px;
+      bottom: 29px;
+      left: 0;
+      width: 5px;
+      background:
+        linear-gradient(
+          to bottom,
+          var(--teal),
+          var(--green)
+        );
+      border-radius: 0 999px 999px 0;
     }
 
     .fact-text {
-      margin: 12px 0 17px;
-      color: var(--muted-text);
-      font-size: 0.98rem;
-      line-height: 1.6;
+      margin: 0;
+      color: var(--text);
+      font-size: clamp(1rem, 2vw, 1.15rem);
+      line-height: 1.65;
     }
 
     .fact-text strong {
@@ -326,309 +251,5 @@
       align-items: center;
       gap: 7px;
       align-self: flex-start;
-      color: var(--navy);
-      font-size: 0.88rem;
-      font-weight: 700;
-      line-height: 1.4;
-      text-decoration: none;
-    }
-
-    .source-link::after {
-      content: "↗";
-      color: var(--teal);
-      font-size: 1rem;
-      transition: transform 150ms ease;
-    }
-
-    .source-link:hover {
-      color: var(--teal);
-      text-decoration: underline;
-      text-underline-offset: 3px;
-    }
-
-    .source-link:hover::after {
-      transform: translate(2px, -2px);
-    }
-
-    .source-link:focus-visible {
-      outline: 3px solid rgba(10, 196, 154, 0.4);
-      outline-offset: 4px;
-      border-radius: 4px;
-    }
-
-    /*
-      Progress indicator
-    */
-    .progress-track {
-      width: min(100%, 820px);
-      height: 4px;
-      margin: 15px auto 0;
-      overflow: hidden;
-      background: rgba(0, 40, 85, 0.1);
-      border-radius: 999px;
-    }
-
-    .progress-bar {
-      width: 100%;
-      height: 100%;
-      background:
-        linear-gradient(
-          90deg,
-          var(--blue),
-          var(--teal),
-          var(--green)
-        );
-      transform: scaleX(0);
-      transform-origin: left center;
-      animation: slideshowProgress var(--cycle-duration) linear infinite;
-    }
-
-    .fact-stage:hover + .progress-track .progress-bar,
-    .fact-stage:focus-within + .progress-track .progress-bar {
-      animation-play-state: paused;
-    }
-
-    @keyframes slideshowProgress {
-      from {
-        transform: scaleX(0);
-      }
-
-      to {
-        transform: scaleX(1);
-      }
-    }
-
-    .pause-guidance {
-      margin: 10px 0 0;
-      color: var(--muted-text);
-      font-size: 0.8rem;
-      line-height: 1.4;
-      text-align: center;
-    }
-
-    .pause-guidance::before {
-      content: "●";
-      margin-right: 7px;
-      color: var(--green);
-      font-size: 0.7rem;
-    }
-
-    @media (max-width: 680px) {
-      .facts-section {
-        padding: 22px 15px;
-        border-radius: 14px;
-      }
-
-      .fact-stage {
-        height: 525px;
-      }
-
-      .fact-image-wrapper {
-        flex-basis: 230px;
-      }
-
-      .fact-content {
-        padding: 21px;
-      }
-
-      .fact-text {
-        font-size: 0.94rem;
-      }
-    }
-
-    /*
-      Accessibility fallback:
-      show all facts normally when reduced motion is requested.
-    */
-    @media (prefers-reduced-motion: reduce) {
-      .fact-stage {
-        display: grid;
-        gap: 16px;
-        height: auto;
-        overflow: visible;
-        background: transparent;
-        border: 0;
-        border-radius: 0;
-        box-shadow: none;
-      }
-
-      .fact-stage::before {
-        display: none;
-      }
-
-      .fact-slide {
-        position: relative;
-        inset: auto;
-        overflow: hidden;
-        opacity: 1;
-        visibility: visible;
-        transform: none;
-        pointer-events: auto;
-        animation: none;
-        background: var(--white);
-        border: 1px solid var(--border);
-        border-radius: 16px;
-        box-shadow: 0 8px 22px rgba(0, 40, 85, 0.08);
-      }
-
-      .progress-track,
-      .pause-guidance {
-        display: none;
-      }
-
-      .source-link::after {
-        transition: none;
-      }
-    }
-  </style>
-</head>
-
-<body>
-  <section
-    class="facts-section"
-    aria-labelledby="facts-heading"
-  
-
-    <div
-      class="fact-stage"
-      aria-label="Automatically cycling data governance facts"
-    >
-
-      <!-- FACT 1 -->
-      <article class="fact-slide">
-        <div class="fact-image-wrapper">
-          YOUR-IMAGE-URL-1
-
-          <span class="fact-number" aria-hidden="true">01</span>
-        </div>
-
-        <div class="fact-content">
-          <p class="fact-category">Data quality</p>
-
-          <h3 class="fact-title">
-            Poor-quality data has a measurable cost
-          </h3>
-
-          <p class="fact-text">
-            Poor data quality costs organisations an average of
-            <strong>$12.9 million per year</strong>, according to Gartner.
-          </p>
-
-          <a
-            class="source-link"
-            href="https://www.gartner.com/en/data-analytics/topics/data-quality"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            View Gartner source
-          </a>
-        </div>
-      </article>
-
-      <!-- FACT 2 -->
-      <article class="fact-slide">
-        <div class="fact-image-wrapper">
-          YOUR-IMAGE-URL-2
-
-          <span class="fact-number" aria-hidden="true">02</span>
-        </div>
-
-        <div class="fact-content">
-          <p class="fact-category">Productivity</p>
-
-          <h3 class="fact-title">
-            Data problems consume valuable time
-          </h3>
-
-          <p class="fact-text">
-            McKinsey found that poor data quality and availability can
-            consume around <strong>30% of total enterprise time</strong>
-            in non-value-added work.
-          </p>
-
-          <a
-            class="source-link"
-            href="https://www.mckinsey.com/capabilities/tech-and-ai/our-insights/designing-data-governance-that-delivers-value?from=@"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            View McKinsey source
-          </a>
-        </div>
-      </article>
-
-      <!-- FACT 3 -->
-      <article class="fact-slide">
-        <div class="fact-image-wrapper">
-          YOUR-IMAGE-URL-3
-
-          <span class="fact-number" aria-hidden="true">03</span>
-        </div>
-
-        <div class="fact-content">
-          <p class="fact-category">Protection</p>
-
-          <h3 class="fact-title">
-            Data breaches remain financially significant
-          </h3>
-
-          <p class="fact-text">
-            IBM reported that the global average cost of a data breach
-            reached <strong>$4.88 million in 2024</strong>.
-          </p>
-
-          <a
-            class="source-link"
-            href="https://newsroom.ibm.com/2024-07-30-ibm-report-escalating-data-breach-disruption-pushes-costs-to-new-highs"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            View IBM source
-          </a>
-        </div>
-      </article>
-
-      <!-- FACT 4 -->
-      <article class="fact-slide">
-        <div class="fact-image-wrapper">
-          YOUR-IMAGE-URL-4
-
-          <span class="fact-number" aria-hidden="true">04</span>
-        </div>
-
-        <div class="fact-content">
-          <p class="fact-category">AI readiness</p>
-
-          <h3 class="fact-title">
-            AI value depends on its data foundation
-          </h3>
-
-          <p class="fact-text">
-            Gartner predicts that by 2027,
-            <strong>60% of organisations</strong> will fail to realise
-            expected AI value due to weak data governance frameworks.
-          </p>
-
-          <a
-            class="source-link"
-            href="https://www.gartner.com/en/data-analytics/topics/data-governance"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            View Gartner source
-          </a>
-        </div>
-      </article>
-
-    </div>
-
-    <div class="progress-track" aria-hidden="true">
-      <div class="progress-bar"></div>
-    </div>
-
-    <p class="pause-guidance">
-      Hover over the card or focus a source link to pause
-    </p>
-  </section>
-</body>
-</html>
+      margin-top: 15px;
+      color
