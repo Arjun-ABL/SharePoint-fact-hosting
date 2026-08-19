@@ -45,12 +45,12 @@
     .fact-stage {
       position: relative;
       width: 100%;
-      height: 400px;
+      height: 300px;
       overflow: hidden;
       background: var(--white);
       border: 1px solid var(--border);
-      border-radius: 18px;
-      box-shadow: 0 10px 30px rgba(0, 40, 85, 0.12);
+      border-radius: 14px;
+      box-shadow: 0 8px 22px rgba(0, 40, 85, 0.12);
     }
 
     .fact-stage::before {
@@ -61,13 +61,7 @@
       right: 0;
       left: 0;
       height: 6px;
-      background: linear-gradient(
-        90deg,
-        var(--navy) 0%,
-        var(--blue) 38%,
-        var(--teal) 70%,
-        var(--green) 100%
-      );
+      background: var(--navy);
     }
 
     .fact-slide {
@@ -140,13 +134,9 @@
 
     .fact-image-wrapper {
       position: relative;
-      flex: 0 0 220px;
+      flex: 0 0 130px;
       overflow: hidden;
-      background: linear-gradient(
-        135deg,
-        var(--navy),
-        #064d7d
-      );
+      background: var(--navy);
     }
 
     .fact-image {
@@ -154,24 +144,14 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: centre;
+      object-position: center;
     }
 
     .fact-image-wrapper::after {
       content: "";
       position: absolute;
       inset: 0;
-      background:
-        linear-gradient(
-          135deg,
-          rgba(0, 40, 85, 0.18),
-          rgba(10, 196, 154, 0.06)
-        ),
-        linear-gradient(
-          to top,
-          rgba(0, 40, 85, 0.24),
-          transparent 55%
-        );
+      background: rgba(0, 40, 85, 0.12);
       pointer-events: none;
     }
 
@@ -181,30 +161,26 @@
       flex: 1;
       flex-direction: column;
       justify-content: center;
-      padding: 25px 32px 29px 36px;
+      padding: 16px 28px 18px 32px;
       background: var(--white);
     }
 
     .fact-content::before {
       content: "";
       position: absolute;
-      top: 27px;
-      bottom: 30px;
+      top: 18px;
+      bottom: 18px;
       left: 0;
       width: 5px;
-      background: linear-gradient(
-        to bottom,
-        var(--teal),
-        var(--green)
-      );
+      background: var(--navy);
       border-radius: 0 999px 999px 0;
     }
 
     .fact-text {
       margin: 0;
       color: var(--text);
-      font-size: clamp(1rem, 2vw, 1.15rem);
-      line-height: 1.6;
+      font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+      line-height: 1.5;
     }
 
     .fact-text strong {
@@ -217,17 +193,17 @@
       align-items: center;
       gap: 7px;
       align-self: flex-start;
-      margin-top: 14px;
+      margin-top: 12px;
       color: var(--navy);
-      font-size: 0.87rem;
+      font-size: 0.85rem;
       font-weight: 700;
       line-height: 1.4;
       text-decoration: none;
     }
 
     .source-link::after {
-      content: "↗";
-      color: var(--teal);
+      content: "\2197";
+      color: var(--navy);
       font-size: 1rem;
       transition: transform 150ms ease;
     }
@@ -243,7 +219,7 @@
     }
 
     .source-link:focus-visible {
-      outline: 3px solid rgba(10, 196, 154, 0.38);
+      outline: 3px solid rgba(0, 40, 85, 0.38);
       outline-offset: 4px;
       border-radius: 3px;
     }
@@ -264,12 +240,7 @@
       display: block;
       width: 100%;
       height: 100%;
-      background: linear-gradient(
-        90deg,
-        var(--blue),
-        var(--teal),
-        var(--green)
-      );
+      background: var(--navy);
       transform: scaleX(0);
       transform-origin: left center;
       animation: progress var(--cycle-duration) linear infinite;
@@ -292,21 +263,21 @@
 
     @media (max-width: 680px) {
       .fact-stage {
-        height: 520px;
-        border-radius: 14px;
+        height: 340px;
+        border-radius: 12px;
       }
 
       .fact-image-wrapper {
-        flex-basis: 285px;
+        flex: 0 0 120px;
       }
 
       .fact-content {
-        padding: 22px 24px 27px 29px;
+        padding: 16px 20px 18px 24px;
       }
 
       .fact-text {
-        font-size: 0.96rem;
-        line-height: 1.55;
+        font-size: 0.94rem;
+        line-height: 1.5;
       }
     }
 
@@ -338,66 +309,83 @@
   >
 
     <!-- FACT 1 -->
-<article class="fact-slide">
+    <article class="fact-slide">
 
-  <div class="fact-image-wrapper">
-    <img 
-      class="fact-image" 
-      src="https://images.pexels.com/photos/6248959/pexels-photo-6248959.jpeg"/>
-  </div>
+      <div class="fact-image-wrapper">
+        <img
+          class="fact-image"
+          src="https://images.pexels.com/photos/6248959/pexels-photo-6248959.jpeg"
+          alt=""
+        />
+      </div>
 
-  <div class="fact-content">
+      <div class="fact-content">
 
-    <p class="fact-text">
-      Poor data quality costs organisations an average of
-      <strong>$12.9 million per year</strong>,
-      according to Gartner.
-    </p>
+        <p class="fact-text">
+          Poor data quality costs organisations an average of
+          <strong>$12.9 million per year</strong>,
+          according to Gartner.
+        </p>
 
-    <a
-      class="source-link"
-      href="https://www.gartner.com/en/data-analytics/topics/data-quality"
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      View Gartner source
-    </a>
+        <a
+          class="source-link"
+          href="https://www.gartner.com/en/data-analytics/topics/data-quality"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View Gartner source
+        </a>
 
-  </div>
+      </div>
 
-</article>
-<!-- FACT 1 END -->
+    </article>
+    <!-- FACT 1 END -->
+
     <!-- FACT 2 -->
-  <article class="fact-slide"> 
+    <article class="fact-slide">
 
-  <div class="fact-image-wrapper"> 
-    <img
-      class="fact-image"  
-      src="https://images.pexels.com/photos/7947999/pexels-photo-7947999.jpeg"/> 
-  </div> 
-  <div class="fact-content"> 
-    <p class="fact-text"> 
-       McKinsey found that poor data quality and availability
+      <div class="fact-image-wrapper">
+        <img
+          class="fact-image"
+          src="https://images.pexels.com/photos/7947999/pexels-photo-7947999.jpeg"
+          alt=""
+        />
+      </div>
+
+      <div class="fact-content">
+
+        <p class="fact-text">
+          McKinsey found that poor data quality and availability
           can consume around
           <strong>30% of total enterprise time</strong>
           in non-value-added work.
-    </p> 
-    <a 
-      class="source-link" 
-      href="https://www.mckinsey.com/capabilities/tech-and-ai/our-insights/designing-data-governance-that-delivers-value?from=@" 
-      rel="noopener noreferrer" 
-    >View McKinsey source 
-    </a>
-  </div> 
-</article> 
-<!-- FACT 2 END -->
+        </p>
+
+        <a
+          class="source-link"
+          href="https://www.mckinsey.com/capabilities/tech-and-ai/our-insights/designing-data-governance-that-delivers-value"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View McKinsey source
+        </a>
+
+      </div>
+
+    </article>
+    <!-- FACT 2 END -->
+
     <!-- FACT 3 -->
     <article class="fact-slide">
-      <div class="fact-image-wrapper"> 
-      <img
-        class="fact-image"  
-        src="https://images.pexels.com/photos/8720589/pexels-photo-8720589.jpeg"/> 
-      </div> 
+
+      <div class="fact-image-wrapper">
+        <img
+          class="fact-image"
+          src="https://images.pexels.com/photos/8720589/pexels-photo-8720589.jpeg"
+          alt=""
+        />
+      </div>
+
       <div class="fact-content">
 
         <p class="fact-text">
@@ -418,16 +406,18 @@
       </div>
 
     </article>
-<!-- FACT 3 END -->
+    <!-- FACT 3 END -->
 
     <!-- FACT 4 -->
     <article class="fact-slide">
 
-      <div class="fact-image-wrapper"> 
-      <img
-        class="fact-image"  
-        src="https://images.pexels.com/photos/9783346/pexels-photo-9783346.jpeg"/> 
-      </div> 
+      <div class="fact-image-wrapper">
+        <img
+          class="fact-image"
+          src="https://images.pexels.com/photos/9783346/pexels-photo-9783346.jpeg"
+          alt=""
+        />
+      </div>
 
       <div class="fact-content">
 
@@ -450,7 +440,7 @@
       </div>
 
     </article>
-<!-- FACT 4 END -->
+    <!-- FACT 4 END -->
 
     <div
       class="cycle-progress"
