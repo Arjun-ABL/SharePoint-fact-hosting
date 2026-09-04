@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Governance Facts — Editor</title>
+<style>
+  :root{
+    --navy:#002855; --green:#79c300; --blue:#81c1cc; --teal:#0ac49a;
+    --white:#fff; --text:#33475b; --border:#d4e4e7; --bg:#f4f7f8;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;padding:24px;background:var(--bg);color:var(--text);
+       font-family:Arial,Helvetica,sans-serif;line-height:1.5}
+  h1{color:var(--navy);font-size:1.4rem;margin:0 0 4px}
+  .sub{margin:0 0 20px;font-size:.9rem;opacity:.85}
+  .wrap{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px;align-items:start}
+  @media (max-width:1000px){.wrap{grid-template-columns:1fr}}
+  .panel{background:#fff;border:1px solid var(--border);border-radius:12px;padding:18px}
+  .panel h2{font-size:1rem;color:var(--navy);margin:0 0 12px}
+  fieldset{border:1px solid var(--border);border-radius:10px;padding:14px;margin:0 0 14px}
+  legend{color:var(--navy);font-weight:700;font-size:.85rem;padding:0 6px}
+  label{display:block;font-size:.78rem;font-weight:700;color:var(--navy);
+        text-transform:uppercase;letter-spacing:.03em;margin:10px 0 4px}
+  input,textarea,select{width:100%;padding:8px 10px;border:1px solid var(--border);
+        border-radius:7px;font:inherit;font-size:.9rem;color:var(--text);background:#fff}
+  textarea{min-height:78px;resize:vertical}
+  .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+  button{cursor:pointer;border:0;border-radius:7px;padding:9px 14px;
+         font:inherit;font-size:.85rem;font-weight:700;background:var(--navy);color:#fff}
+  button.ghost{background:#fff;color:var(--navy);border:1px solid var(--navy)}
+  button.danger{background:#fff;color:#b00020;border:1px solid #b00020}
+  button.small{padding:5px 9px;font-size:.75rem}
+  .hint{font-size:.75rem;opacity:.75;margin:4px 0 0}
+  .thumb{width:100%;height:80px;object-fit:cover;border-radius:7px;
+         border:1px solid var(--border);background:#eef3f4;margin-top:6px}
+  .fact-head{display:flex;justify-content:space-between;align-items:center;gap:8px}
+  .badge{background:var(--navy);color:#fff;border-radius:999px;padding:2px 9px;font-size:.72rem;font-weight:700}
+  iframe{width:100%;height:330px;border:1px solid var(--border);border-radius:10px;background:#fff}
+  #out{width:100%;height:280px;font-family:ui-monospace,Consolas,monospace;font-size:.72rem;white-space:pre}
+  .sticky{position:sticky;top:24px}
+  .ok{color:#127a54;font-size:.8rem;font-weight:700}
+</style>
+</head>
+<body>
+
+<h1>Data Governance Facts — Editor</h1>
+<p class="sub">Edit the facts below, preview the result, then download or copy the generated
+<strong>index.html</strong> and commit it to your GitHub Pages repo. The generated page contains
+<strong>no JavaScript</strong>, so it stays safe for SharePoint embedding.</p>
+
+<div class="wrap">
+
+  <div class="panel">
+    <h2>Facts</h2>
+    <div id="facts"></div>
+    <div class="row">
+      <button id="add">+ Add fact</button>
+      <button id="reset" class="ghost">Reset to saved</button>
+    </div>
+
+    <fieldset style="margin-top:18px">
+      <legend>Settings</legend>
+      <label for="secs">Seconds per fact</label>
+      <input id="secs" type="number" min="3" max="30" step="1" value="8">
+      <label for="height">Stage height (px)</label>
+      <input id="height" type="number" min="180" max="600" step="10" value="300">
+      <label for="title">Page title</label>
+      <input id="title" type="text" value="Data Governance Facts">
+    </fieldset>
+
+    <fieldset>
+      <legend>Import existing page</legend>
+      <label for="import">Paste your current index.html to load its facts</label>
+      <textarea id="import" placeholder="Paste full HTML here..."></textarea>
+      <div class="row" style="margin-top:8px">
+        <button id="doImport" class="ghost">Load facts from HTML</button>
+        <span id="importMsg" class="ok"></span>
+      </div>
+    </fieldset>
+  </div>
+
+  <div class="panel sticky">
+    <h2>Live preview</h2>
+    <iframe id="preview" title="Preview"></iframe>
+
+    <h2 style="margin-top:18px">Generated index.html</h2>
+    <div class="row" style="margin-bottom:8px">
+      <button id="download">Download index.html</button>
+      <button id="copy" class="ghost">Copy HTML</button>
+      <span id="copyMsg" class="ok"></span>
+    </div>
+    <textarea id="out" readonly></textarea>
+  </div>
+
+</div>
+
+<script>
+const DEFAULTS = [
+  {text:"Poor data quality costs organisations an average of **$12.9 million per year**, according to Gartner.",
+   img:"https://images.pexels.com/photos/6248959/pexels-photo-6248959.jpeg",
+   name:"View Gartner source",
+   url:"https://www.gartner.com/en/data-analytics/topics/data-quality"},
+  {text:"McKinsey found that poor data quality and availability can consume around **30% of total enterprise time** in non-value-added work.",
+   img:"https://images.pexels.com/photos/7947999/pexels-photo-7947999.jpeg",
+   name:"View McKinsey source",
+   url:"https://www.mckinsey.com/capabilities/tech-and-ai/our-insights/designing-data-governance-that-delivers-value"},
+  {text:"IBM reported that the global average cost of a data breach reached **$4.88 million in 2024**.",
+   img:"https://images.pexels.com/photos/8720589/pexels-photo-8720589.jpeg",
+   name:"View IBM source",
+   url:"https://newsroom.ibm.com/2024-07-30-ibm-report-escalating-data-breach-disruption-pushes-costs-to-new-highs"},
+  {text:"Gartner predicts that by 2027, **60% of organisations** will fail to realise expected AI value due to weak data governance frameworks.",
+   img:"https://images.pexels.com/photos/9783346/pexels-photo-9783346.jpeg",
+   name:"View Gartner source",
+   url:"https://www.gartner.com/en/data-analytics/topics/data-governance"}
+];
+
+const KEY = "dgFactsEditorState";
+let state = load();
+
+function load(){
+  try{
+    const s = JSON.parse(localStorage.getItem(KEY));
+    if(s && Array.isArray(s.facts) && s.facts.length) return s;
+  }catch(e){}
+  return {facts: JSON.parse(JSON.stringify(DEFAULTS)), secs:8, height:300, title:"Data Governance Facts"};
+}
+function save(){ localStorage.setItem(KEY, JSON.stringify(state)); }
+
+const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;")
+                          .replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+const bold = s => esc(s).replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>");
+
+/* ---------- page generator (output contains no JavaScript) ---------- */
+function buildPage(){
+  const f = state.facts, n = f.length || 1, s = Number(state.secs)||8;
+  const cycle = n * s;
+  const pIn  = +(100/cycle).toFixed(3);          // ~1s fade in
+  const pOne = +(100/n).toFixed(3);              // slot width
+  const pHold= +(pOne - pIn).toFixed(3);
+
+  const delays = f.map((_,i)=>
+`    .fact-slide:nth-of-type(${i+1}) {
+      animation-delay: ${i*s - 1}s;
+    }`).join("\n\n");
+
+  const slides = f.map((x,i)=>
+`    <!-- FACT ${i+1} -->
+    <article class="fact-slide">
+
+      <div class="fact-image-wrapper">
+        <img
+          class="fact-image"
+          src="${esc(x.img)}"
+          alt=""
+        />
+      </div>
+
+      <div class="fact-content">
+
+        <p class="fact-text">
+          ${bold(x.text)}
+        </p>
+
+        <a
+          class="source-link"
+          href="${esc(x.url)}"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          ${esc(x.name)}
+        </a>
+
+      </div>
+
+    </article>
+    <!-- FACT ${i+1} END -->`).join("\n\n");
+
+  return `<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>${esc(state.title)}</title>
+
+  <style>
+    :root {
+      --navy: #002855;
+      --green: #79c300;
+      --blue: #81c1cc;
+      --teal: #0ac49a;
+
+      --white: #ffffff;
+      --text: #33475b;
+      --border: #d4e4e7;
+
+      /* ${n} facts at ${s} seconds each */
+      --cycle-duration: ${cycle}s;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      background: transparent;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      padding: 4px;
+    }
+
+    .fact-stage {
+      position: relative;
+      width: 100%;
+      height: ${Number(state.height)||300}px;
+      overflow: hidden;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      box-shadow: 0 8px 22px rgba(0, 40, 85, 0.12);
+    }
+
+    .fact-stage::before {
+      content: "";
+      position: absolute;
+      z-index: 20;
+      top: 0;
+      right: 0;
+      left: 0;
+      height: 6px;
+      background: var(--navy);
+    }
+
+    .fact-slide {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      transform: translateX(24px);
+      pointer-events: none;
+      animation: cycleFacts var(--cycle-duration) ease-in-out infinite;
+    }
+
+    /*
+      Negative delay ensures a fact is already visible
+      when the page first loads.
+    */
+${delays}
+
+    @keyframes cycleFacts {
+      0% {
+        opacity: 0;
+        transform: translateX(24px);
+        pointer-events: none;
+      }
+
+      ${pIn}% {
+        opacity: 1;
+        transform: translateX(0);
+        pointer-events: auto;
+      }
+
+      ${pHold}% {
+        opacity: 1;
+        transform: translateX(0);
+        pointer-events: auto;
+      }
+
+      ${pOne}% {
+        opacity: 0;
+        transform: translateX(-24px);
+        pointer-events: none;
+      }
+
+      100% {
+        opacity: 0;
+        transform: translateX(-24px);
+        pointer-events: none;
+      }
+    }
+
+    .fact-stage:hover .fact-slide,
+    .fact-stage:focus-within .fact-slide {
+      animation-play-state: paused;
+    }
+
+    .fact-image-wrapper {
+      position: relative;
+      flex: 0 0 130px;
+      overflow: hidden;
+      background: var(--navy);
+    }
+
+    .fact-image {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .fact-image-wrapper::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 40, 85, 0.12);
+      pointer-events: none;
+    }
+
+    .fact-content {
+      position: relative;
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      justify-content: center;
+      padding: 16px 28px 18px 32px;
+      background: var(--white);
+    }
+
+    .fact-content::before {
+      content: "";
+      position: absolute;
+      top: 18px;
+      bottom: 18px;
+      left: 0;
+      width: 5px;
+      background: var(--navy);
+      border-radius: 0 999px 999px 0;
+    }
+
+    .fact-text {
+      margin: 0;
+      color: var(--text);
+      font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+      line-height: 1.5;
+    }
+
+    .fact-text strong {
+      color: var(--navy);
+      font-weight: 700;
+    }
+
+    .source-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      align-self: flex-start;
+      margin-top: 12px;
+      color: var(--navy);
+      font-size: 0.85rem;
+      font-weight: 700;
+      line-height: 1.4;
+      text-decoration: none;
+    }
+
+    .source-link::after {
+      content: "\\2197";
+      color: var(--navy);
+      font-size: 1rem;
+      transition: transform 150ms ease;
+    }
+
+    .source-link:hover {
+      color: var(--teal);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .source-link:hover::after {
+      transform: translate(2px, -2px);
+    }
+
+    .source-link:focus-visible {
+      outline: 3px solid rgba(0, 40, 85, 0.38);
+      outline-offset: 4px;
+      border-radius: 3px;
+    }
+
+    .cycle-progress {
+      position: absolute;
+      z-index: 30;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      height: 4px;
+      overflow: hidden;
+      background: rgba(0, 40, 85, 0.08);
+    }
+
+    .cycle-progress::after {
+      content: "";
+      display: block;
+      width: 100%;
+      height: 100%;
+      background: var(--navy);
+      transform: scaleX(0);
+      transform-origin: left center;
+      animation: progress var(--cycle-duration) linear infinite;
+    }
+
+    @keyframes progress {
+      from {
+        transform: scaleX(0);
+      }
+
+      to {
+        transform: scaleX(1);
+      }
+    }
+
+    .fact-stage:hover .cycle-progress::after,
+    .fact-stage:focus-within .cycle-progress::after {
+      animation-play-state: paused;
+    }
+
+    @media (max-width: 680px) {
+      .fact-stage {
+        height: ${(Number(state.height)||300) + 40}px;
+        border-radius: 12px;
+      }
+
+      .fact-image-wrapper {
+        flex: 0 0 120px;
+      }
+
+      .fact-content {
+        padding: 16px 20px 18px 24px;
+      }
+
+      .fact-text {
+        font-size: 0.94rem;
+        line-height: 1.5;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .fact-slide {
+        display: none;
+        opacity: 1;
+        transform: none;
+        animation: none;
+      }
+
+      .fact-slide:first-of-type {
+        display: flex;
+        pointer-events: auto;
+      }
+
+      .cycle-progress {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div
+    class="fact-stage"
+    aria-label="Automatically cycling data governance facts"
+  >
+
+${slides}
+
+    <div
+      class="cycle-progress"
+      aria-hidden="true"
+    ></div>
+
+  </div>
+
+</body>
+</html>
+`;
+}
+
+/* ---------- editor UI ---------- */
+const factsEl = document.getElementById("facts");
+
+function render(){
+  factsEl.innerHTML = "";
+  state.facts.forEach((f,i)=>{
+    const fs = document.createElement("fieldset");
+    fs.innerHTML = `
+      <legend>Fact ${i+1}</legend>
+      <div class="fact-head">
+        <span class="badge">${i+1} of ${state.facts.length}</span>
+        <div class="row">
+          <button class="ghost small" data-a="up" data-i="${i}">&uarr;</button>
+          <button class="ghost small" data-a="down" data-i="${i}">&darr;</button>
+          <button class="danger small" data-a="del" data-i="${i}">Delete</button>
+        </div>
+      </div>
+      <label>Fact text <span style="text-transform:none;font-weight:400">(wrap key figures in **double asterisks** to bold them)</span></label>
+      <textarea data-k="text" data-i="${i}">${esc(f.text)}</textarea>
+      <label>Image URL</label>
+      <input data-k="img" data-i="${i}" value="${esc(f.img)}">
+      <img class="thumb" src="${esc(f.img)}" alt="" onerror="this.style.opacity=.25">
+      <p class="hint">Use a direct image URL (Pexels/Unsplash direct links, or a file in your repo, e.g. <code>images/fact1.jpg</code>).</p>
+      <label>Source link text</label>
+      <input data-k="name" data-i="${i}" value="${esc(f.name)}">
+      <label>Source URL</label>
+      <input data-k="url" data-i="${i}" value="${esc(f.url)}">
+    `;
+    factsEl.appendChild(fs);
+  });
+  refresh();
+}
+
+function refresh(){
+  const html = buildPage();
+  document.getElementById("out").value = html;
+  document.getElementById("preview").srcdoc = html;
+  save();
+}
+
+factsEl.addEventListener("input", e=>{
+  const k = e.target.dataset.k, i = e.target.dataset.i;
+  if(k===undefined) return;
+  state.facts[i][k] = e.target.value;
+  if(k==="img"){
+    const img = e.target.parentElement.querySelector(".thumb");
+    if(img){ img.src = e.target.value; img.style.opacity=1; }
+  }
+  refresh();
+});
+
+factsEl.addEventListener("click", e=>{
+  const a = e.target.dataset.a; if(!a) return;
+  e.preventDefault();
+  const i = +e.target.dataset.i;
+  if(a==="del" && state.facts.length>1) state.facts.splice(i,1);
+  if(a==="up" && i>0) state.facts.splice(i-1,0,state.facts.splice(i,1)[0]);
+  if(a==="down" && i<state.facts.length-1) state.facts.splice(i+1,0,state.facts.splice(i,1)[0]);
+  render();
+});
+
+["secs","height","title"].forEach(id=>{
+  const el = document.getElementById(id);
+  el.value = state[id];
+  el.addEventListener("input", ()=>{ state[id] = el.value; refresh(); });
+});
+
+document.getElementById("add").onclick = ()=>{
+  state.facts.push({text:"New fact with a **key figure** here.",
+                    img:"https://images.pexels.com/photos/6248959/pexels-photo-6248959.jpeg",
+                    name:"View source", url:"https://example.com"});
+  render();
+};
+
+document.getElementById("reset").onclick = ()=>{
+  if(confirm("Reset all facts to the original four?")){
+    state = {facts: JSON.parse(JSON.stringify(DEFAULTS)), secs:8, height:300, title:"Data Governance Facts"};
+    document.getElementById("secs").value = 8;
+    document.getElementById("height").value = 300;
+    document.getElementById("title").value = state.title;
+    render();
+  }
+};
+
+document.getElementById("download").onclick = ()=>{
+  const blob = new Blob([buildPage()], {type:"text/html"});
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "index.html";
+  a.click();
+  URL.revokeObjectURL(a.href);
+};
+
+document.getElementById("copy").onclick = async ()=>{
+  await navigator.clipboard.writeText(buildPage());
+  const m = document.getElementById("copyMsg");
+  m.textContent = "Copied ✓"; setTimeout(()=>m.textContent="",2000);
+};
+
+document.getElementById("doImport").onclick = ()=>{
+  const src = document.getElementById("import").value.trim();
+  const msg = document.getElementById("importMsg");
+  if(!src){ msg.textContent="Nothing pasted."; return; }
+  const doc = new DOMParser().parseFromString(src,"text/html");
+  const slides = [...doc.querySelectorAll(".fact-slide")];
+  if(!slides.length){ msg.textContent="No .fact-slide elements found."; return; }
+  state.facts = slides.map(s=>{
+    const p = s.querySelector(".fact-text");
+    let t = "";
+    if(p) p.childNodes.forEach(nd=>{
+      t += nd.nodeName==="STRONG" ? "**"+nd.textContent.trim()+"**" : nd.textContent;
+    });
+    const a = s.querySelector(".source-link");
+    return {
+      text: t.replace(/\s+/g," ").trim(),
+      img: s.querySelector(".fact-image")?.getAttribute("src") || "",
+      name: a ? a.textContent.trim() : "View source",
+      url: a ? a.getAttribute("href") : ""
+    };
+  });
+  const t = doc.querySelector("title"); if(t) state.title = t.textContent;
+  document.getElementById("title").value = state.title;
+  msg.textContent = "Loaded "+state.facts.length+" facts ✓";
+  render();
+};
+
+render();
+</script>
+
+</body>
+</html>
